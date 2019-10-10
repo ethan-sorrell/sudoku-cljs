@@ -16,8 +16,8 @@
   [db pos]
   (loop [new-invalids '()
          old-invalids (get db :invalid-pos)]
-    (when-let [candidate (first old-invalids)]
+    (if-let [candidate (first old-invalids)]
       (if (valid-cell? db candidate)
         (recur new-invalids (rest old-invalids))
-        (recur (cons candidate new-invalids) (rest old-invalids))))
-    (assoc db :invalid-pos new-invalids)))
+        (recur (cons candidate new-invalids) (rest old-invalids)))
+      (assoc db :invalid-pos new-invalids))))
