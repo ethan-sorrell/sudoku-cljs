@@ -7,7 +7,7 @@
 
 (defn dispatch-board-change
   [pos val]
-  (rf/dispatch [::events/board pos val]))
+  (re-frame/dispatch [::events/board pos val]))
 
 ;; call dispatch-board-change on change
 (defn main-panel []

@@ -16,4 +16,4 @@
    (-> db
        (assoc pos val)
        (update :invalid-pos conj pos)
-       (game/update-invalids db pos))))
+       (game/update-invalids pos))))
