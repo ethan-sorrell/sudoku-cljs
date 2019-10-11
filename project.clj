@@ -6,6 +6,7 @@
                  [thheller/shadow-cljs "2.8.61"]
                  [cider/cider-nrepl "0.22.4"]
                  [reagent "0.8.1"]
+                 [hiccup              "1.0.5"]
                  [re-frame "0.10.9"]]
 
   :plugins []
@@ -22,6 +23,5 @@
   :profiles
   {:dev
    {:dependencies [[binaryage/devtools "0.9.10"]]}
-
    :prod { }
    })

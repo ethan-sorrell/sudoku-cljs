@@ -5,3 +5,4 @@
 out
 *.manifest
 /.shadow-cljs
+/node_modules

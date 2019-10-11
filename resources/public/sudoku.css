@@ -1,0 +1,22 @@
+table, th, td {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 3px;
+}
+
+td {
+    text-align:center;
+    width:48px;
+    height:48px;
+}
+
+.horiz {
+    border-bottom: 2px solid;
+    size: 5;
+}
+
+.vert {
+    border-right: 2px solid;
+}

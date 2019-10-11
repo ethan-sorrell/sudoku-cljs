@@ -1,7 +1,5 @@
 (ns sudoku-cljs.game)
 
-
-
 ;;;;;;;;
 
 (defn get-coord [row col]
