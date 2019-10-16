@@ -6,3 +6,5 @@ out
 *.manifest
 /.shadow-cljs
 /node_modules
+.nrepl-port
+package-lock.json

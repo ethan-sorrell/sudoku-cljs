@@ -6,8 +6,8 @@
    [sudoku-cljs.events :as events]))
 
 (defn dispatch-board-change
-  [pos val]
-  (re-frame/dispatch [::events/board pos val]))
+  [event y x]
+  (re-frame/dispatch [::events/board (game/get-coord y x) (-> event .-target .-value)]))
 
 ;; call dispatch-board-change on change
 (defn cell-field
@@ -18,6 +18,7 @@
    [:input
     {:type "text"
      :name (game/get-coord y x)
+     :on-change [re-frame/dispatch #(dispatch-board-change % y x)]
      :size 1}]])
 
 (defn table-row [col]
