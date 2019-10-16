@@ -51,41 +51,38 @@
 (defn get-col [matrix coord]
   (map #(get matrix %) (col-peers coord)))
 
-(defn get-neighborhood [type]
+(defn get-neighborhood [matrix coord type]
   (case type
-    :row get-row
-    :col get-col
-    :square get-square))
+    :row (get-row matrix coord)
+    :col (get-col matrix coord)
+    :square (get-square matrix coord)))
 
 
 ;;;;;;;;
 (defn contains-duplicates? [coll]
   "Take a collection of strings representing a row/col/vicinity"
   (let [elts (filter seq coll)]
-    (= elts (distinct elts))))
+    (not= elts (distinct elts))))
 
 (defn valid-cell?
   [matrix coord]
   (not-any? identity
-   (map contains-duplicates?
+   (map #(not (contains-duplicates? %))
         (map #(% matrix coord) [get-row get-col get-square]))))
 
 (defn valid-neighborhood?
-  [invalid-pos invalid-type pos]
-  (.log js/console (str ((neighborhood-peers invalid-type) invalid-pos) " vs " pos "."))
+  [db invalid-pos invalid-type]
   (not
-   (contains?
-    ((neighborhood-peers invalid-type) invalid-pos)
-    pos)))
+   (contains-duplicates?
+    (get-neighborhood db invalid-pos invalid-type))))
 
 (defn update-invalids
-  ;; TODO: currently doing the complete wrong thing
   ;; could be modified to only check positions in "zone" of pos
-  [db pos]
+  [db]
   (loop [new-invalids '()
          old-invalids (db :invalid-pos)]
     (if-let [[candidate-pos candidate-type] (first old-invalids)]
-      (if (valid-neighborhood? candidate-pos candidate-type pos)
+      (if (valid-neighborhood? db candidate-pos candidate-type)
         (recur new-invalids (rest old-invalids))
         (recur (cons [candidate-pos candidate-type] new-invalids) (rest old-invalids)))
       (assoc db :invalid-pos new-invalids))))

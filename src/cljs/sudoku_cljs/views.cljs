@@ -9,21 +9,27 @@
   [pos event]
   (re-frame/dispatch [::events/board pos (-> event .-target .-value)]))
 
+(defn conflicting-pos?
+  [pos invalids]
+  (loop [rem invalids]
+    (if (not (seq rem))
+      false
+      (let [[invalid-pos type] (first rem)]
+        (.log js/console (str (some #(= pos) ((game/neighborhood-peers type) invalid-pos))
+                              " : "
+                              ((game/neighborhood-peers type) invalid-pos)) " and " pos)
+       ;; (.log js/console (str (contains? ((game/neighborhood-peers type) invalid-pos)  pos)))
+        (if (some #(= pos) ((game/neighborhood-peers type) invalid-pos))
+          true
+          (recur (rest rem)))))))
+
 #_(defn conflicting-pos? [pos invalids]
   (loop [rem invalids]
-    (if (not (seq invalids))
-      false
-      (let [[invalid-pos type] (first invalids)]
-        (if (contains? ((game/neighborhood-peers type) invalid-pos) pos)
-          true
-          (recur (rest invalids)))))))
-
-(defn conflicting-pos? [pos invalids]
-  (loop [rem invalids]
-    (if (not (seq invalids))
+    (if (not (seq rem))
       nil
-      (let [[invalid-pos type] (first invalids)]
-        (.log js/console (str ((game/neighborhood-peers type) invalid-pos)))))))
+      (let [[invalid-pos type] (first rem)]
+        #_(recur (rest rem))))))
+        ;; #_(.log js/console (str ((game/neighborhood-peers type) invalid-pos)))))))
   ;;(.log js/console (str invalids))
   ;;(contains? (map first invalids) pos))
 

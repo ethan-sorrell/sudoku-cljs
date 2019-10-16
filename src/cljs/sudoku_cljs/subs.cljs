@@ -11,7 +11,7 @@
 (re-frame/reg-sub
  ::cell
  (fn [db [_ pos]]
-   (db (keyword pos))))
+   (db pos)))
 
 (re-frame/reg-sub
  ::db
