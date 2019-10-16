@@ -16,9 +16,8 @@
   (re-frame/clear-subscription-cache!)
   (reagent/render
    ;; [views/main-panel]
-   ;; [:table {:class ".horiz"} [:td [:input {:type "text" :name "a1" :size 1}]]]
-   ;; [:table (views/cell-field 1 1 nil nil)]
-   (views/input-table db/default-db)
+   ;; [views/input-table db/default-db]
+   [views/board-panel]
    (.getElementById js/document "app")))
 
 (defn init []

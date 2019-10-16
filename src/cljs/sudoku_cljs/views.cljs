@@ -28,8 +28,8 @@
              [:tr]
              (for [x (range 1 10)]
                (if (= (rem x 3) 0)
-                 (cell-field x col horiz 1)
-                 (cell-field x col horiz vert)))))]
+                 [cell-field x col horiz 1]
+                 [cell-field x col horiz vert]))))]
     (if (= (rem col 3) 0)
       (cell-row col 1 nil)
       (cell-row col nil nil))))
@@ -40,12 +40,12 @@
    (into
     [:table {:border "2px solid;"}]
     (for [y (range 1 10)]
-      (table-row y)))])
+      [table-row y]))])
 
 (defn board-panel []
   (let [board (re-frame/subscribe [::subs/board])
         board-state @board]
-    (input-table @board)))
+    [input-table @board]))
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])]
