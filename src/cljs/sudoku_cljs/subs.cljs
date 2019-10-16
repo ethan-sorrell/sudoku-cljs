@@ -9,7 +9,23 @@
    (:name db)))
 
 (re-frame/reg-sub
+ ::cell
+ (fn [db [_ pos]]
+   (db (keyword pos))))
+
+(re-frame/reg-sub
+ ::db
+ (fn [db _]
+   db))
+
+(re-frame/reg-sub
+ ::invalid
+ (fn [db _]
+   (db :invalid-pos)))
+
+#_(re-frame/reg-sub
  ::board
+ (dissoc )
  (fn [db]
    (select-keys
     db

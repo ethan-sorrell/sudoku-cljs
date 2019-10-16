@@ -20,3 +20,7 @@ td {
 .vert {
     border-right: 2px solid;
 }
+
+.invalid {
+    background-color: red;
+}

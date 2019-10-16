@@ -17,7 +17,9 @@
   (reagent/render
    ;; [views/main-panel]
    ;; [views/input-table db/default-db]
-   [views/board-panel]
+   ;; [views/board-panel]
+   ;; [views/input-table]
+   [views/input-panel]
    (.getElementById js/document "app")))
 
 (defn init []

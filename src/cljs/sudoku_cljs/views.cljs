@@ -5,21 +5,61 @@
    [sudoku-cljs.game :as game]
    [sudoku-cljs.events :as events]))
 
-(defn dispatch-board-change
-  [event y x]
-  (re-frame/dispatch [::events/board (game/get-coord y x) (-> event .-target .-value)]))
+(defn board-change
+  [pos event]
+  (re-frame/dispatch [::events/board pos (-> event .-target .-value)]))
 
-;; call dispatch-board-change on change
+#_(defn conflicting-pos? [pos invalids]
+  (loop [rem invalids]
+    (if (not (seq invalids))
+      false
+      (let [[invalid-pos type] (first invalids)]
+        (if (contains? ((game/neighborhood-peers type) invalid-pos) pos)
+          true
+          (recur (rest invalids)))))))
+
+(defn conflicting-pos? [pos invalids]
+  (loop [rem invalids]
+    (if (not (seq invalids))
+      nil
+      (let [[invalid-pos type] (first invalids)]
+        (.log js/console (str ((game/neighborhood-peers type) invalid-pos)))))))
+  ;;(.log js/console (str invalids))
+  ;;(contains? (map first invalids) pos))
+
 (defn cell-field
   [x y horiz vert]
   "hiccup markup for sudoku input cell"
-  [:td
-   {:class [(when horiz "horiz") (when vert "vert")]}
-   [:input
-    {:type "text"
-     :name (game/get-coord y x)
-     :on-change [re-frame/dispatch #(dispatch-board-change % y x)]
-     :size 1}]])
+  (let [pos (game/get-coord y x)]
+    [:td
+     {:class [(when horiz "horiz") (when vert "vert")
+              (when (conflicting-pos?
+                     pos
+                     @(re-frame/subscribe [::subs/invalid]))
+                "invalid")]}
+     [:input
+      {:type "text"
+       :name pos
+       :on-blur #(when % (board-change pos %))
+       :size 1}]]))
+
+
+#_(defn cell-field
+  [x y horiz vert]
+  "hiccup markup for sudoku input cell"
+  (let [pos (game/get-coord y x)]
+    [:td
+     {:class [(when horiz "horiz") (when vert "vert")
+              (when (conflicting-pos?
+                     pos
+                     @(re-frame/subscribe [::subs/invalid]))
+                "invalid")]}
+     [:input
+      {:type "text"
+       :name pos
+       :value @(re-frame/subscribe [::subs/cell pos])
+       :on-change #(re-frame/dispatch (board-change pos %))
+       :size 1}]]))
 
 (defn table-row [col]
   "hiccup markup for row of sudoku input table"
@@ -28,24 +68,37 @@
              [:tr]
              (for [x (range 1 10)]
                (if (= (rem x 3) 0)
-                 [cell-field x col horiz 1]
-                 [cell-field x col horiz vert]))))]
+                 (cell-field x col horiz 1)
+                 (cell-field x col horiz vert)))))]
     (if (= (rem col 3) 0)
-      (cell-row col 1 nil)
-      (cell-row col nil nil))))
+      [cell-row col 1 nil]
+      [cell-row col nil nil])))
 
-(defn input-table [board]
+(defn input-table []
   "hiccup markup for sudoku input table"
   [:div
-   (into
-    [:table {:border "2px solid;"}]
-    (for [y (range 1 10)]
-      [table-row y]))])
+   [:table {:border "2px solid;"}
+    (into
+     [:tbody]
+     (for [y (range 1 10)]
+       [table-row y]))]])
 
-(defn board-panel []
-  (let [board (re-frame/subscribe [::subs/board])
-        board-state @board]
-    [input-table @board]))
+(defn show-db []
+  [:div
+   [:p
+    (str @(re-frame/subscribe [::subs/db]))]])
+
+(defn show-invalids []
+  [:div
+   [:p
+    (str @(re-frame/subscribe [::subs/invalid]))]])
+
+(defn input-panel []
+  "page for input table"
+  [:div
+   [input-table]
+   [show-db]
+   [show-invalids]])
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])]
@@ -75,7 +128,6 @@
                   {:style "border-right:2px solid"}
                   (form/text-field {:size 1} (get-coord y x))]
                  [:td (form/text-field {:size 1} (get-coord y x))])))))))
-
 
 #_(defn form-page
   [request]

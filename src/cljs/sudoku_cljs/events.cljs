@@ -14,6 +14,9 @@
  ::board
  (fn [db [_ pos val]]
    (-> db
-       (assoc pos val)
-       (update :invalid-pos conj pos)
+       (assoc (keyword pos) val)
+       (update :invalid-pos conj [pos :row])
+       (update :invalid-pos conj [pos :col])
+       (update :invalid-pos conj [pos :square])
+       ;;)))
        (game/update-invalids pos))))
