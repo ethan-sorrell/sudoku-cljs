@@ -6,6 +6,16 @@ body {
     font-family: monospace;
 }
 
+/* Clear floats after the columns */
+.row {
+    display: flex;
+    padding: 10px;
+}
+
+.column {
+    margin: 10px;
+}
+
 th, td {
     padding: 3px;
 }

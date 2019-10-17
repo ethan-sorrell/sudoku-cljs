@@ -18,5 +18,4 @@
        (update :invalid-pos conj [pos :row])
        (update :invalid-pos conj [pos :col])
        (update :invalid-pos conj [pos :square])
-       ;;)))
-       (game/update-invalids pos))))
+       (game/update-invalids))))

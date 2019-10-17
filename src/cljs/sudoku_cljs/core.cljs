@@ -15,7 +15,6 @@
 (defn ^:dev/after-load mount-root []
   (re-frame/clear-subscription-cache!)
   (reagent/render
-   ;; [views/main-panel]
    ;; [views/input-table db/default-db]
    ;; [views/board-panel]
    ;; [views/input-table]

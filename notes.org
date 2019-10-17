@@ -1,0 +1,17 @@
+
+
+- Where do we want to check for valid input?
+- *TODO* resolve terminology
+  - change instances of "matrix" to "board" in game.cljs
+
+
+
+* output table thoughts:
+- have a css class for cells which are restricted by input
+- ? have a css class for cells which we can determine by ruleset
+- ? have control panel to decide which propagation rules we will apply
+- ? ability to hover restricted numbers to see which propagation rule determined restriction
+- *BIG QUESTION*:
+  - Do we want to completely recalculate output table on each update
+    - or, is it possible + more efficient to mutate state
+    - or can we somehow memoize?

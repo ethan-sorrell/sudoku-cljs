@@ -4,11 +4,6 @@
    [sudoku-cljs.game :as game]))
 
 (re-frame/reg-sub
- ::name
- (fn [db]
-   (:name db)))
-
-(re-frame/reg-sub
  ::cell
  (fn [db [_ pos]]
    (db pos)))
