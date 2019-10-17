@@ -15,23 +15,9 @@
     (if (not (seq rem))
       false
       (let [[invalid-pos type] (first rem)]
-        (.log js/console (str (some #(= pos) ((game/neighborhood-peers type) invalid-pos))
-                              " : "
-                              ((game/neighborhood-peers type) invalid-pos)) " and " pos)
-       ;; (.log js/console (str (contains? ((game/neighborhood-peers type) invalid-pos)  pos)))
-        (if (some #(= pos) ((game/neighborhood-peers type) invalid-pos))
+        (if (some #(= % pos) ((game/neighborhood-peers type) invalid-pos))
           true
           (recur (rest rem)))))))
-
-#_(defn conflicting-pos? [pos invalids]
-  (loop [rem invalids]
-    (if (not (seq rem))
-      nil
-      (let [[invalid-pos type] (first rem)]
-        #_(recur (rest rem))))))
-        ;; #_(.log js/console (str ((game/neighborhood-peers type) invalid-pos)))))))
-  ;;(.log js/console (str invalids))
-  ;;(contains? (map first invalids) pos))
 
 (defn cell-field
   [x y horiz vert]
@@ -47,24 +33,6 @@
       {:type "text"
        :name pos
        :on-blur #(when % (board-change pos %))
-       :size 1}]]))
-
-
-#_(defn cell-field
-  [x y horiz vert]
-  "hiccup markup for sudoku input cell"
-  (let [pos (game/get-coord y x)]
-    [:td
-     {:class [(when horiz "horiz") (when vert "vert")
-              (when (conflicting-pos?
-                     pos
-                     @(re-frame/subscribe [::subs/invalid]))
-                "invalid")]}
-     [:input
-      {:type "text"
-       :name pos
-       :value @(re-frame/subscribe [::subs/cell pos])
-       :on-change #(re-frame/dispatch (board-change pos %))
        :size 1}]]))
 
 (defn table-row [col]

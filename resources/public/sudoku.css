@@ -2,6 +2,10 @@ table, th, td {
     border-collapse: collapse;
 }
 
+body {
+    font-family: monospace;
+}
+
 th, td {
     padding: 3px;
 }
@@ -22,5 +26,5 @@ td {
 }
 
 .invalid {
-    background-color: red;
+    background-color: mistyrose;
 }
