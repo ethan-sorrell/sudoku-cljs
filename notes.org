@@ -4,6 +4,7 @@
 - *TODO* resolve terminology
   - change instances of "matrix" to "board" in game.cljs
 
+- *FIXME* when there is an error on board, creating error css, our flexbox columns are messed up somehow
 
 
 * output table thoughts:
