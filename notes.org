@@ -6,6 +6,10 @@
 
 - *FIXME* when there is an error on board, creating error css, our flexbox columns are messed up somehow
 
+- *FIXME* some of the terminology seems wrong in view helper function: table-row takes a col parameter, should be row?
+
+- re-write table-row using output-row format
+
 
 * output table thoughts:
 - have a css class for cells which are restricted by input

@@ -18,7 +18,7 @@
    ;; [views/input-table db/default-db]
    ;; [views/board-panel]
    ;; [views/input-table]
-   [views/input-panel]
+   [views/main-panel]
    (.getElementById js/document "app")))
 
 (defn init []
