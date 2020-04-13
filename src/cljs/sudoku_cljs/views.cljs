@@ -1,3 +1,4 @@
+;; all of the markup that forms our page
 (ns sudoku-cljs.views
   (:require
    [re-frame.core :as re-frame]
@@ -6,7 +7,6 @@
    [sudoku-cljs.rules :as rules]
    [sudoku-cljs.solve :as solve]
    [sudoku-cljs.events :as events]))
-
 
 (defn board-change
   [pos event]
@@ -40,13 +40,6 @@
     (if (= (rem col 3) 0)
       [cell-row 1 nil]
       [cell-row nil nil])))
-
-;;;;;;;;;;;;;;;;; output helpers ;;;;;;;;;;;;;;;
-
-
-
-
-;;;;;;;;;;; markup and other helpers ;;;;;;;;;;;
 
 (def coord-set
   (for [y (range 1 10)
@@ -101,7 +94,6 @@
      (for [x (range 1 10)
            :let [coord (board/get-coord row-n x)]]
        (output-cell board coord horiz (when (= (rem x 3) 0) true))))))
-
 
 (defn output-table [board]
   [:div
