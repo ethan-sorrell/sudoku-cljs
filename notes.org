@@ -20,3 +20,11 @@
   - Do we want to completely recalculate output table on each update
     - or, is it possible + more efficient to mutate state
     - or can we somehow memoize?
+    
+* re-frame notes
+- events :: sent by dispatch - composed of a name and optional data
+- event handler :: a function, registered by reg-event-fx, takes coeffects map and event
+- coeffects :: current state of the world
+- effect handlers :: a function, actions the effects (one per key in map) returned by event handler.
+- query :: function automatically called after an event, effect handled. registered by reg-sub. - matieralizes view
+- view functions :: subscribe to query functions, generate hiccup which is rendered
