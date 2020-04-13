@@ -1,6 +1,8 @@
 # sudoku-cljs
 
-A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
+A [re-frame](https://github.com/Day8/re-frame) application that acts as an interactive sudoku solver.
+After more experience with lisps (mostly racket), a lot of the code is a bit verbose. It's certainly not idiomatic clojure for that matter. More important for me was trying to create a somewhat reasonable code structure.
+
 
 ## Development Mode
 

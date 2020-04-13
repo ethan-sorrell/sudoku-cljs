@@ -1,7 +1,7 @@
 (ns sudoku-cljs.subs
   (:require
    [re-frame.core :as re-frame]
-   [sudoku-cljs.game :as game]))
+   [sudoku-cljs.solve :as solve]))
 
 (re-frame/reg-sub
  ::cell
@@ -26,4 +26,4 @@
     db
     (for [x (range 1 10)
           y (range 1 10)]
-      (game/get-coord x y)))))
+      (solve/get-coord x y)))))

@@ -9,8 +9,6 @@
                  [hiccup              "1.0.5"]
                  [re-frame "0.10.9"]]
 
-  :plugins []
-
   :min-lein-version "2.5.3"
 
   :source-paths ["src/clj" "src/cljs"]

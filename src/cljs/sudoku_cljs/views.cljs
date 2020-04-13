@@ -2,7 +2,9 @@
   (:require
    [re-frame.core :as re-frame]
    [sudoku-cljs.subs :as subs]
-   [sudoku-cljs.game :as game]
+   [sudoku-cljs.board :as board]
+   [sudoku-cljs.rules :as rules]
+   [sudoku-cljs.solve :as solve]
    [sudoku-cljs.events :as events]))
 
 
@@ -10,23 +12,13 @@
   [pos event]
   (re-frame/dispatch [::events/board pos (-> event .-target .-value)]))
 
-(defn conflicting-pos?
-  [pos invalids]
-  (loop [rem invalids]
-    (if (not (seq rem))
-      false
-      (let [[invalid-pos type] (first rem)]
-        (if (some #(= % pos) ((game/neighborhood-peers type) invalid-pos))
-          true
-          (recur (rest rem)))))))
-
 (defn cell-field
   [x y horiz vert]
   "hiccup markup for sudoku input cell"
-  (let [pos (game/get-coord y x)]
+  (let [pos (board/get-coord y x)]
     [:td
      {:class [(when horiz "horiz") (when vert "vert")
-              (when (conflicting-pos?
+              (when (rules/conflicting-pos?
                      pos
                      @(re-frame/subscribe [::subs/invalid]))
                 "invalid")]}
@@ -59,7 +51,7 @@
 (def coord-set
   (for [y (range 1 10)
         x (range 1 10)
-        :let [coord (game/get-coord y x)]]
+        :let [coord (board/get-coord y x)]]
     coord))
 
 (def uninitialized-cboard
@@ -83,7 +75,7 @@
               vals (second pair)]
           (if-not (seq vals)
             (recur result (rest rem))
-            (recur (game/assign result coord vals) (rest rem))))))))
+            (recur (solve/assign result coord vals) (rest rem))))))))
 
 (defn output-cell [board coord horiz vert]
   [:td
@@ -107,7 +99,7 @@
     (into
      [:tr]
      (for [x (range 1 10)
-           :let [coord (game/get-coord row-n x)]]
+           :let [coord (board/get-coord row-n x)]]
        (output-cell board coord horiz (when (= (rem x 3) 0) true))))))
 
 

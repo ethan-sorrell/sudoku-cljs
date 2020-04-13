@@ -2,8 +2,7 @@
   (:require
    [re-frame.core :as re-frame]
    [sudoku-cljs.db :as db]
-   [sudoku-cljs.game :as game]
-   ))
+   [sudoku-cljs.solve :as solve]))
 
 (re-frame/reg-event-db
  ::initialize-db
@@ -18,4 +17,4 @@
        (update :invalid-pos conj [pos :row])
        (update :invalid-pos conj [pos :col])
        (update :invalid-pos conj [pos :square])
-       (game/update-invalids))))
+       (solve/update-invalid-posns))))
