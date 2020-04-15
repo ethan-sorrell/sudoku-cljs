@@ -1,7 +1,7 @@
 (ns sudoku-cljs.subs
   (:require
    [re-frame.core :as re-frame]
-   [sudoku-cljs.solve :as solve]))
+   [sudoku-cljs.board :as board]))
 
 (re-frame/reg-sub
  ::cell
@@ -16,14 +16,14 @@
 (re-frame/reg-sub
  ::invalid
  (fn [db _]
-   (db :invalid-pos)))
+   (db :invalid-cells)))
 
 #_(re-frame/reg-sub
  ::board
- (dissoc )
+ (dissoc)
  (fn [db]
    (select-keys
     db
     (for [x (range 1 10)
           y (range 1 10)]
-      (solve/get-coord x y)))))
+      (list x y)))))

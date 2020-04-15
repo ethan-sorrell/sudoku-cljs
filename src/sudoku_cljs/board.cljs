@@ -6,7 +6,7 @@
 (defn get-coord [row col]
   "take 1-indexed row, col and give coordinate string
    e.g. 1 1 -> a1"
-  (str (char (+ 96 row)) col))
+  (list col row))
 
 (defn get-xy [coord]
   "take coordinate string, give 1-indexed [row col]"
@@ -17,24 +17,24 @@
     [row col]))
 
 (defn row-peers [coord]
-  (let [[row-n col-n] (get-xy coord)]
+  (let [[row-n col-n] coord]
     (for [col (range 1 10)]
-      (get-coord row-n col))))
+      (list row-n col))))
 
 (defn col-peers [coord]
-  (let [[row-n col-n] (get-xy coord)]
+  (let [[row-n col-n] coord]
     (for [row (range 1 10)]
-      (get-coord row col-n))))
+      (list row col-n))))
 
 (defn square-peers [coord]
-  (let [[row-n col-n] (get-xy coord)
+  (let [[row-n col-n] coord
         col-3 (quot (dec col-n) 3)
         row-3 (quot (dec row-n) 3)
         start-col (inc (* 3 col-3))
         start-row (inc (* 3 row-3))]
     (for [row (range start-row (+ start-row 3))
           col (range start-col (+ start-col 3))]
-      (get-coord row col))))
+      (list row col))))
 
 (defn all-peers [coord]
    (remove #(= % coord)
@@ -62,3 +62,15 @@
     :row (get-row matrix coord)
     :col (get-col matrix coord)
     :square (get-square matrix coord)))
+
+(def coord-set
+  (for [x (range 1 10)
+        y (range 1 10)
+        :let [coord (list x y)]]
+    coord))
+
+(def unconstrained-board
+  (into
+   {}
+   (map #(vector % "123456789") coord-set)))
+

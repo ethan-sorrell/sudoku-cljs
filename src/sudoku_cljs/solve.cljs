@@ -8,12 +8,12 @@
   ;; TODO: could be modified to only check positions in "zone" of pos
   [db]
   (loop [new-invalids '()
-         old-invalids (db :invalid-pos)]
+         old-invalids (db :invalid-cells)]
     (if-let [[candidate-pos candidate-type] (first old-invalids)]
       (if (rules/valid-neighborhood? db candidate-pos candidate-type)
         (recur new-invalids (rest old-invalids))
         (recur (cons [candidate-pos candidate-type] new-invalids) (rest old-invalids)))
-      (assoc db :invalid-pos new-invalids))))
+      (assoc db :invalid-cells new-invalids))))
 
 (declare assign elim eliminate)
 
@@ -83,3 +83,19 @@
           (if (= 0 (count rem))
             result
             (recur (eliminate result pos (str (first rem))) (rest rem))))))))
+
+
+(defn constrain-board [board]
+  "takes partially-filled in solution and outputs description of constraints"
+  (loop [result board/unconstrained-board
+         rem board]
+    (when result
+      (if-not (seq rem)
+        result
+        (let [pair (first rem)
+              coord (first pair)
+              vals (second pair)]
+          (if-not (seq vals)
+            (recur result (rest rem))
+            (recur (assign result coord vals) (rest rem))))))))
+

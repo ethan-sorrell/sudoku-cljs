@@ -7,7 +7,6 @@
    [sudoku-cljs.db :as db] ;; probably temporary
    [sudoku-cljs.config :as config]))
 
-
 (defn dev-setup []
   (when config/debug?
     (println "dev mode")))
@@ -15,9 +14,6 @@
 (defn ^:dev/after-load mount-root []
   (re-frame/clear-subscription-cache!)
   (reagent/render
-   ;; [views/input-table db/default-db]
-   ;; [views/board-panel]
-   ;; [views/input-table]
    [views/main-panel]
    (.getElementById js/document "app")))
 
