@@ -14,7 +14,7 @@
  (fn [db [_ pos val]]
    (-> db
        (assoc pos val)
-       (update :invalid-pos conj [pos :row])
-       (update :invalid-pos conj [pos :col])
-       (update :invalid-pos conj [pos :square])
+       (update :invalid-cells conj [pos :row])
+       (update :invalid-cells conj [pos :col])
+       (update :invalid-cells conj [pos :square])
        (solve/update-invalid-posns))))

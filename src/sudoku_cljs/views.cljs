@@ -15,7 +15,7 @@
 (defn cell-field
   [x y horiz vert]
   "hiccup markup for sudoku input cell"
-  (let [pos (board/get-coord y x)]
+  (let [pos (list y x)]
     [:td
      {:class [(when horiz "horiz") (when vert "vert")
               (when (rules/conflicting-pos?
@@ -41,34 +41,10 @@
       [cell-row 1 nil]
       [cell-row nil nil])))
 
-(def coord-set
-  (for [y (range 1 10)
-        x (range 1 10)
-        :let [coord (board/get-coord y x)]]
-    coord))
-
-(def uninitialized-cboard
-  (into
-   {}
-   (map #(vector % "123456789") coord-set)))
-
 (defn extract-board [db]
-  (map #(vector % (db %)) coord-set)
-  #_(map db coord-set))
-
-(defn convert-board [board]
-  "convert from partially-filled in solution to description of constraints"
-  (loop [result uninitialized-cboard
-         rem board]
-    (when result
-      (if-not (seq rem)
-        result
-        (let [pair (first rem)
-              coord (first pair)
-              vals (second pair)]
-          (if-not (seq vals)
-            (recur result (rest rem))
-            (recur (solve/assign result coord vals) (rest rem))))))))
+  "extracts only the board cells from the state db"
+  (map #(vector % (db %)) board/coord-set)
+  #_(map db board/coord-set))
 
 (defn output-cell [board coord horiz vert]
   [:td
@@ -84,15 +60,14 @@
         {:class [(when (contains? constraints n) "valid")]}
         #_(str n)
         (when (some #(= % n) constraints)
-              (str n))])
-     )])
+              (str n))]))])
 
 (defn output-row [board row-n]
   (let [horiz (when (= (rem row-n 3) 0) true)]
     (into
      [:tr]
      (for [x (range 1 10)
-           :let [coord (board/get-coord row-n x)]]
+           :let [coord (list row-n x)]]
        (output-cell board coord horiz (when (= (rem x 3) 0) true))))))
 
 (defn output-table [board]
@@ -106,11 +81,9 @@
 (defn draw-output [db]
    (-> db
        (extract-board)
-       (convert-board)
+       (solve/constrain-board)
        (output-table)
        #_(str)))
-
-;;;;;;;;;;;;;;;;;; top level ;;;;;;;;;;;;;;;;;;
 
 (defn input-table []
   "hiccup markup for sudoku input table"
