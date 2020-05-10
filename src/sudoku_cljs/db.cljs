@@ -5,5 +5,6 @@
 
 (def default-db
   (merge
-    {:invalid-cells '()}
+   {:invalid-cells '()
+    :show-output-panel? false}
     blank-board))

@@ -10,6 +10,11 @@
    db/default-db))
 
 (re-frame/reg-event-db
+ ::toggle-output-panel
+ (fn [db [_ bool]]
+   (assoc db :show-output-panel? bool)))
+
+(re-frame/reg-event-db
  ::board
  (fn [db [_ pos val]]
    (-> db

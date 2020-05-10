@@ -28,6 +28,15 @@
        :on-blur #(when % (board-change pos %))
        :size 1}]]))
 
+(defn toggle-button []
+  (let [show-output-panel (re-frame/subscribe [::subs/show-output-panel])]
+    [:div
+     [:input
+      {:type "checkbox"
+       :value @show-output-panel
+       :on-change #(re-frame/dispatch [::events/toggle-output-panel (not @show-output-panel)])}]
+     [:label "Show Board Constraints"]]))
+
 (defn table-row [col]
   "hiccup markup for row of sudoku input table"
   (letfn [(cell-row [horiz vert]
@@ -95,8 +104,10 @@
        [table-row y]))]])
 
 (defn output-panel []
-  [:div
-   [draw-output @(re-frame/subscribe [::subs/db])]])
+  (let [is-shown @(re-frame/subscribe [::subs/show-output-panel])]
+    (when is-shown
+      [:div
+       [draw-output @(re-frame/subscribe [::subs/db])]])))
 
 (defn show-db []
   [:div
@@ -108,13 +119,16 @@
    [:p
     (str @(re-frame/subscribe [::subs/invalid]))]])
 
+
 (defn main-panel []
   "page for input table"
   [:div
    [:div.row
     [:div.column
+     [toggle-button]]
+    [:div.column
      [input-table]]
     [:div.column
      [output-panel]]]
-   [show-db]
-   [show-invalids]])
+   #_[show-db]
+   #_[show-invalids]])

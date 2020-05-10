@@ -18,6 +18,11 @@
  (fn [db _]
    (db :invalid-cells)))
 
+(re-frame/reg-sub
+ ::show-output-panel
+ (fn [db _]
+   (db :show-output-panel?)))
+
 #_(re-frame/reg-sub
  ::board
  (dissoc)

@@ -6,10 +6,18 @@ body {
     font-family: monospace;
 }
 
-/* Clear floats after the columns */
+.header {
+    text-align: center;
+    background: green;
+    padding: 20px;
+    margin: -10px;
+    color: white;
+}
+
 .row {
     display: flex;
     padding: 10px;
+    justify-content: center;
 }
 
 .column {
