@@ -8,7 +8,7 @@ body {
 
 .header {
     text-align: center;
-    background: green;
+    background: navy;
     padding: 20px;
     margin: -10px;
     color: white;
@@ -16,8 +16,12 @@ body {
 
 .row {
     display: flex;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
     padding: 10px;
     justify-content: center;
+    border: 4px solid;
 }
 
 .column {

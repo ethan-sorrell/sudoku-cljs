@@ -33,9 +33,10 @@
     [:div
      [:input
       {:type "checkbox"
+       :id "is-shown"
        :value @show-output-panel
        :on-change #(re-frame/dispatch [::events/toggle-output-panel (not @show-output-panel)])}]
-     [:label "Show Board Constraints"]]))
+     [:label {:for "is-shown"} "Show Board Constraints"]]))
 
 (defn table-row [col]
   "hiccup markup for row of sudoku input table"
@@ -52,24 +53,18 @@
 
 (defn extract-board [db]
   "extracts only the board cells from the state db"
-  (map #(vector % (db %)) board/coord-set)
-  #_(map db board/coord-set))
+  (map #(vector % (db %)) board/coord-set))
 
 (defn output-cell [board coord horiz vert]
-  [:td
+  [:td.output
    {:class [(when horiz "horiz")
             (when vert "vert")]}
    (let [constraint-string (get board coord)
          constraints (map js/parseInt constraint-string)]
      [:div
-      (filter (fn [item] (some #(= % item) constraints)) (range 1 10))
-      ]
-     #_(for [n (range 1 10)]
-       [:div
-        {:class [(when (contains? constraints n) "valid")]}
-        #_(str n)
-        (when (some #(= % n) constraints)
-              (str n))]))])
+      (interleave
+       (repeat " ")
+       (filter (fn [item] (some #(= % item) constraints)) (range 1 10)))])])
 
 (defn output-row [board row-n]
   (let [horiz (when (= (rem row-n 3) 0) true)]
@@ -91,8 +86,7 @@
    (-> db
        (extract-board)
        (solve/constrain-board)
-       (output-table)
-       #_(str)))
+       (output-table)))
 
 (defn input-table []
   "hiccup markup for sudoku input table"
@@ -118,7 +112,6 @@
   [:div
    [:p
     (str @(re-frame/subscribe [::subs/invalid]))]])
-
 
 (defn main-panel []
   "page for input table"
