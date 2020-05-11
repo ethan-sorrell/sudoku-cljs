@@ -34,8 +34,7 @@
      [:input
       {:type "checkbox"
        :id "is-shown"
-       :defaultChecked false
-       :value @show-output-panel
+       :checked @show-output-panel
        :on-change #(re-frame/dispatch [::events/toggle-output-panel (not @show-output-panel)])}]
      [:label {:for "is-shown"} "Show Board Constraints"]]))
 
