@@ -34,6 +34,7 @@
      [:input
       {:type "checkbox"
        :id "is-shown"
+       :defaultChecked false
        :value @show-output-panel
        :on-change #(re-frame/dispatch [::events/toggle-output-panel (not @show-output-panel)])}]
      [:label {:for "is-shown"} "Show Board Constraints"]]))
@@ -116,12 +117,13 @@
 (defn main-panel []
   "page for input table"
   [:div
-   [:div.row
+   [:div.row.bordered
     [:div.column
      [toggle-button]]
-    [:div.column
-     [input-table]]
-    [:div.column
-     [output-panel]]]
+    [:div.row
+     [:div.column
+      [input-table]]
+     [:div.column
+      [output-panel]]]]
    #_[show-db]
    #_[show-invalids]])
