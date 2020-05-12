@@ -125,4 +125,4 @@
      [:div.column
       [output-panel]]]]
    #_[show-db]
-   #_[show-invalids]])
+   [show-invalids]])

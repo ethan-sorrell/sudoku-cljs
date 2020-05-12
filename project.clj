@@ -4,7 +4,7 @@
                   :exclusions [com.google.javascript/closure-compiler-unshaded
                                org.clojure/google-closure-library]]
                  [thheller/shadow-cljs "2.8.61"]
-                 [cider/cider-nrepl "0.22.4"]
+                 [cider/cider-nrepl "0.25.0-alpha1"]
                  [reagent "0.8.1"]
                  [hiccup              "1.0.5"]
                  [re-frame "0.10.9"]]

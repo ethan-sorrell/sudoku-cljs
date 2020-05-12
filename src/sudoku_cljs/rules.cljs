@@ -8,25 +8,22 @@
   (let [elts (filter seq coll)]
     (not= elts (distinct elts))))
 
-(defn valid-cell?
-  [matrix coord]
-  (not-any? identity
-   (map #(not (contains-duplicates? %))
-        (map #(% matrix coord) [board/get-row board/get-col board/get-square]))))
+;; (defn valid-cell?
+;;   [matrix coord]
+;;   (not-any?
+;;    identity
+;;    (map contains-duplicates?
+;;         (map #(% matrix coord) [board/get-row board/get-col board/get-square]))))
 
 (defn valid-neighborhood?
+  ;; neighborhood refers to 3x3 or 1x9 area with duplicity rules
   [db invalid-pos invalid-type]
-  (not
-   (contains-duplicates?
-    (board/get-neighborhood db invalid-pos invalid-type))))
+  (not (contains-duplicates? (board/get-neighborhood db invalid-pos invalid-type))))
 
 (defn conflicting-pos?
+  "returns true if pos is part of an invalid neighborhood"
   [pos invalids]
-  (loop [rem invalids]
-    (if (not (seq rem))
-      false
-      (let [[invalid-pos type] (first rem)]
-        (if (some #(= % pos) ((board/neighborhood-peers type) invalid-pos))
-          true
-          (recur (rest rem)))))))
-
+  (some
+   (fn [[invalid-pos neighborhood-type]]
+     (some #(= % pos) ((board/neighborhood-peers neighborhood-type) invalid-pos)))
+   invalids))

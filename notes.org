@@ -1,13 +1,6 @@
-
-
 - Where do we want to check for valid input?
 - *TODO* resolve terminology
   - change instances of "matrix" to "board" in game.cljs
-
-- *FIXME* when there is an error on board, creating error css, our flexbox columns are messed up somehow
-
-- *FIXME* some of the terminology seems wrong in view helper function: table-row takes a col parameter, should be row?
-
 - re-write table-row using output-row format
 
 
