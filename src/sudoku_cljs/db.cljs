@@ -6,5 +6,6 @@
 (def default-db
   (merge
    {:invalid-cells '()
+    :game-mode "learn"
     :show-output-panel? false}
-    blank-board))
+   blank-board))

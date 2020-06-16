@@ -15,6 +15,11 @@
    (assoc db :show-output-panel? bool)))
 
 (re-frame/reg-event-db
+ ::change-mode
+ (fn [db [_ mode]]
+   (assoc db :game-mode mode)))
+
+(re-frame/reg-event-db
  ::board
  (fn [db [_ pos val]]
    (-> db

@@ -4,13 +4,14 @@ table, th, td {
 
 body {
     font-family: monospace;
+    margin: 0px;
 }
 
 .header {
     text-align: center;
     background: navy;
     padding: 20px;
-    margin: -10px;
+    margin: 0px;
     color: white;
 }
 
@@ -26,6 +27,29 @@ body {
 
 .row.bordered {
     border: 4px solid;
+}
+
+.mode-bar {
+    text-align: center;
+    background: darkgray;
+    padding: 3px;
+}
+
+.mode-cell {
+    background: cadetblue;
+    color: white;
+    padding: 3px;
+    font-size: 20px;
+}
+
+.mode-cell:first-child {
+    border-right: solid;
+    border-color: darkgray;
+    border-width: 3px;
+}
+
+.mode-cell:hover {
+    background: darkcyan;
 }
 
 .column {

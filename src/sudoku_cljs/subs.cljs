@@ -23,6 +23,11 @@
  (fn [db _]
    (db :show-output-panel?)))
 
+(re-frame/reg-sub
+ ::game-mode
+ (fn [db _]
+   (db :game-mode)))
+
 #_(re-frame/reg-sub
  ::board
  (dissoc)

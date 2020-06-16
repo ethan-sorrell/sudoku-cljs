@@ -113,16 +113,34 @@
    [:p
     (str @(re-frame/subscribe [::subs/invalid]))]])
 
+(defn header-bar []
+  [:div.header [:h1 "Sudoku Helper"]])
+
+(defn mode-bar []
+  [:div.mode-bar
+   [:a.mode-cell
+    {:on-click #(re-frame/dispatch [::events/change-mode "learn"])}
+    "learn"]
+   [:a.mode-cell
+    {:on-click #(re-frame/dispatch [::events/change-mode "play"])}
+    "play"]])
+
 (defn main-panel []
   "page for input table"
   [:div
-   [:div.row.bordered
-    [:div.column
-     [toggle-button]]
-    [:div.row
-     [:div.column
-      [input-table]]
-     [:div.column
-      [output-panel]]]]
-   #_[show-db]
-   [show-invalids]])
+   [header-bar]
+   [mode-bar]
+   (let [game-mode @(re-frame/subscribe [::subs/game-mode])]
+     (case game-mode
+       "play" [:div
+               [:div.row.bordered
+                [:div.column
+                 [toggle-button]]
+                [:div.row
+                 [:div.column
+                  [input-table]]
+                 [:div.column
+                  [output-panel]]]]
+               #_[show-db]
+               [show-invalids]]
+       "learn" [:div.row.bordered "lorem ipsum"]))])
