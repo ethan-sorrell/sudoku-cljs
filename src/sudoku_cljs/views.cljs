@@ -2,6 +2,7 @@
 (ns sudoku-cljs.views
   (:require
    [re-frame.core :as re-frame]
+   [sudoku-cljs.db :as db]
    [sudoku-cljs.subs :as subs]
    [sudoku-cljs.board :as board]
    [sudoku-cljs.rules :as rules]
@@ -11,22 +12,6 @@
 (defn board-change
   [pos event]
   (re-frame/dispatch [::events/board pos (-> event .-target .-value)]))
-
-(defn cell-field
-  [x y horiz vert]
-  "hiccup markup for sudoku input cell"
-  (let [pos (list y x)]
-    [:td
-     {:class [(when horiz "horiz") (when vert "vert")
-              (when (rules/conflicting-pos?
-                     pos
-                     @(re-frame/subscribe [::subs/invalid]))
-                "invalid")]}
-     [:input
-      {:type "text"
-       :name pos
-       :on-blur #(when % (board-change pos %))
-       :size 1}]]))
 
 (defn toggle-button []
   (let [show-output-panel (re-frame/subscribe [::subs/show-output-panel])]
@@ -38,27 +23,35 @@
        :on-change #(re-frame/dispatch [::events/toggle-output-panel (not @show-output-panel)])}]
      [:label {:for "is-shown"} "Show Board Constraints"]]))
 
+(defn cell-field
+  [x y]
+  "hiccup markup for sudoku input cell"
+  (let [pos (list y x)]
+    [:td
+     {:class ["cell"
+              (when (rules/conflicting-pos?
+                     pos @(re-frame/subscribe [::subs/invalid]))
+                "invalid")]}
+     [:input
+      {:type "text"
+       :name pos
+       :on-blur #(when % (board-change pos %))
+       :size 1}]]))
+
 (defn table-row [col]
   "hiccup markup for row of sudoku input table"
-  (letfn [(cell-row [horiz vert]
-            (into
-             [:tr]
-             (for [x (range 1 10)]
-               (if (= (rem x 3) 0)
-                 (cell-field x col horiz 1)
-                 (cell-field x col horiz vert)))))]
-    (if (= (rem col 3) 0)
-      [cell-row 1 nil]
-      [cell-row nil nil])))
+  (into
+   [:tr.cell-row]
+   (for [x (range 1 10)]
+     (cell-field x col))))
+
 
 (defn extract-board [db]
   "extracts only the board cells from the state db"
   (map #(vector % (db %)) board/coord-set))
 
-(defn output-cell [board coord horiz vert]
-  [:td.output
-   {:class [(when horiz "horiz")
-            (when vert "vert")]}
+(defn output-cell [board coord]
+  [:td.cell
    (let [constraint-string (get board coord)
          constraints (map js/parseInt constraint-string)]
      [:div
@@ -67,12 +60,11 @@
        (filter (fn [item] (some #(= % item) constraints)) (range 1 10)))])])
 
 (defn output-row [board row-n]
-  (let [horiz (when (= (rem row-n 3) 0) true)]
-    (into
-     [:tr]
-     (for [x (range 1 10)
-           :let [coord (list row-n x)]]
-       (output-cell board coord horiz (when (= (rem x 3) 0) true))))))
+  (into
+   [:tr.cell-row]
+   (for [x (range 1 10)
+         :let [coord (list row-n x)]]
+     (output-cell board coord))))
 
 (defn output-table [board]
   [:div
@@ -125,6 +117,11 @@
     {:on-click #(re-frame/dispatch [::events/change-mode "play"])}
     "play"]])
 
+(defn learn-page []
+  [:div.row.bordered
+   [:div.column "we start out with a blank board"]
+   [:div.column (output-table db/blank-board)]])
+
 (defn main-panel []
   "page for input table"
   [:div
@@ -143,4 +140,4 @@
                   [output-panel]]]]
                #_[show-db]
                [show-invalids]]
-       "learn" [:div.row.bordered "lorem ipsum"]))])
+       "learn" [learn-page]))])
