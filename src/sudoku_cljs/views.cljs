@@ -119,14 +119,16 @@
 
 (defn learn-page []
   [:div.row.bordered
+   [:button {:on-click #(re-frame/dispatch [::events/learn-next])} "next"]
    [:div.column "we start out with a blank board"]
-   [:div.column (output-table db/blank-board)]])
+   [:div.column (output-table (merge db/blank-board db/perfect-col))]])
 
 (defn main-panel []
   "page for input table"
   [:div
    [header-bar]
    [mode-bar]
+   [show-db]
    (let [game-mode @(re-frame/subscribe [::subs/game-mode])]
      (case game-mode
        "play" [:div

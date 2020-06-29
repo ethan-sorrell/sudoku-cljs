@@ -18,7 +18,7 @@
 (declare assign elim eliminate)
 
 (defn elim [matrix from value]
-  "Remove value from association with from in matrix"
+  "Remove `value` from association with `from` in `matrix`"
   (assoc matrix from (string/replace (get matrix from) (re-pattern value) "")))
 
 (defn candidate-locations [matrix pos value]

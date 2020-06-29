@@ -28,6 +28,11 @@
  (fn [db _]
    (db :game-mode)))
 
+(re-frame/reg-sub
+ ::learn-step
+ (fn [db _]
+   (db :learn-step)))
+
 #_(re-frame/reg-sub
  ::board
  (dissoc)

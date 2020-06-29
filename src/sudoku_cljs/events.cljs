@@ -20,6 +20,11 @@
    (assoc db :game-mode mode)))
 
 (re-frame/reg-event-db
+ ::learn-next
+ (fn [db [_ step]]
+   (update db :learn-step inc)))
+
+(re-frame/reg-event-db
  ::board
  (fn [db [_ pos val]]
    (-> db
